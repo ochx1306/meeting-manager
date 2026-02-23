@@ -1,32 +1,26 @@
 import { useMemo, type ComponentType } from 'react'
 import { AppTable } from '@/components/data-table'
 import type { ColumnDef } from '@/components/data-table/column'
-
 import type { CrudFormProps } from './crud-form'
 import { CreateDialog } from './CreateDialog'
 import { UpdateDialog } from './UpdateDialog'
-import { DeleteButton } from './DeleteButton'
 
 interface CrudTableTemplateProps<T> {
   featureName: string
   data: T[]
   columns: ColumnDef<T>[]
-  // CreateDialog: ComponentType
   CrudForm: ComponentType<CrudFormProps<T>>
-  // UpdateDialog: ComponentType<{ item: T }>
-  // DeleteButton: ComponentType<{ item: T }>
-  handleDelete: () => void
+  DeleteAction: ComponentType<{ item: T }>
+  PrefixActions?: ComponentType<{ item: T }>
 }
 
 export const CrudTableTemplate = <T,>({
   featureName,
   data,
   columns,
-  // CreateDialog,
   CrudForm,
-  // UpdateDialog,
-  // DeleteButton,
-  handleDelete,
+  DeleteAction,
+  PrefixActions,
 }: CrudTableTemplateProps<T>) => {
   const tableColumns = useMemo<ColumnDef<T>[]>(() => {
     return [
@@ -34,19 +28,23 @@ export const CrudTableTemplate = <T,>({
       {
         id: 'actions',
         header: '操作',
-        cell: ({ row }) => (
-          <div className="flex gap-2">
-            <UpdateDialog
-              featureName={featureName}
-              item={row as T}
-              CrudForm={CrudForm}
-            />
-            <DeleteButton itemName="temp" handleDelete={handleDelete} />
-          </div>
-        ),
+        cell: ({ row }) => {
+          const item = row as T
+          return (
+            <div className="flex gap-2">
+              {PrefixActions && <PrefixActions item={item} />}
+              <UpdateDialog
+                featureName={featureName}
+                item={item}
+                CrudForm={CrudForm}
+              />
+              <DeleteAction item={item} />
+            </div>
+          )
+        },
       },
     ]
-  }, [columns, featureName, CrudForm, handleDelete])
+  }, [columns, PrefixActions, featureName, CrudForm, DeleteAction])
 
   return (
     <div className="container mx-auto py-10">
