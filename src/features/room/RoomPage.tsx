@@ -1,18 +1,10 @@
-// import { RoomTable } from './components/RoomTable'
-import { AddRoomDialog } from '../room/components/AddRoomDialog'
-import { SampleTable } from './components/SampleTable'
+import { RoomTable } from './components/RoomTable'
+import { awaitRoomHydration } from './room-store'
 
 const RoomPage = () => {
-  return (
-    <div className="container mx-auto py-10">
-      <h1 className="text-2xl font-bold mb-4">会議室一覧</h1>
-      <div className="mb-4">
-        <AddRoomDialog />
-      </div>
-      {/* <RoomTable /> */}
-      <SampleTable />
-    </div>
-  )
+  return <RoomTable />
 }
 
-export { RoomPage as Component }
+const roomPageLoader = async () => awaitRoomHydration()
+
+export { RoomPage as Component, roomPageLoader as loader }

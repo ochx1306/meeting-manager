@@ -55,7 +55,7 @@ export const OrganizationForm = ({
           parentId: null,
           validFrom: new Date(),
           isIndefinite: true,
-          validTo: undefined,
+          validTo: null,
           isProvisional: false,
           isSuspended: false,
         },
@@ -69,7 +69,7 @@ export const OrganizationForm = ({
 
   useEffect(() => {
     if (isIndefinite) {
-      form.setValue('validTo', undefined)
+      form.setValue('validTo', null)
     }
   }, [isIndefinite, form])
 
@@ -205,7 +205,7 @@ export const OrganizationForm = ({
                 <FormControl>
                   <Calendar
                     mode="single"
-                    selected={field.value}
+                    selected={field.value ?? undefined}
                     onSelect={field.onChange}
                   />
                 </FormControl>

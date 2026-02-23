@@ -1,6 +1,7 @@
 import type { StateCreator } from 'zustand'
 import {
   createPartialAsyncStore,
+  createHydrationAwaiter,
   type CustomPersistOptions,
 } from '@/utils/create-partial-async-store'
 import { APP_NAME } from '@/constants/app'
@@ -19,3 +20,5 @@ export const createAppStore = <T extends object>(
     driver: appStateStorage,
   })
 }
+
+export { createHydrationAwaiter }

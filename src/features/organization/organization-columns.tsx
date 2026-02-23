@@ -1,8 +1,9 @@
-import type { ColumnDef } from '@/components/table'
+import { Badge } from '@/components/ui/badge'
+import type { ColumnDef } from '@/components/data-table'
+import { UpdateOrganizationDialog } from './components/UpdateOrganizationDailog'
+import { DeleteOrganizationButton } from './components/DeleteOrganizationButton'
 import type { Organization } from './organization-schema'
 import { useOrganizationStore } from './organization-store'
-import { Badge } from '@/components/ui/badge'
-import { OrganizationActionsCell } from './components/OrganizationActionsCell'
 
 export const organizationColumns: ColumnDef<Organization>[] = [
   {
@@ -55,7 +56,12 @@ export const organizationColumns: ColumnDef<Organization>[] = [
     id: 'actions',
     header: '操作',
     cell: ({ row }) => {
-      return <OrganizationActionsCell row={row} />
+      return (
+        <div className="flex gap-2">
+          <UpdateOrganizationDialog organization={row} />
+          <DeleteOrganizationButton organization={row} />
+        </div>
+      )
     },
   },
 ]

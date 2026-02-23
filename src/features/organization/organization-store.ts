@@ -1,5 +1,4 @@
-import { createHydrationAwaiter } from '@/utils/create-partial-async-store'
-import { createAppStore } from '@/lib/create-app-store'
+import { createAppStore, createHydrationAwaiter } from '@/lib/create-app-store'
 import type { Organization } from './organization-schema'
 
 type OrganizationState = {

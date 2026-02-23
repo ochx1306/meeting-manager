@@ -1,18 +1,15 @@
-import { AppTable } from '@/components/table'
+import { AppTable } from '@/components/data-table'
 import { useOrganizationStore } from '../organization-store'
 import { organizationColumns } from '../organization-columns'
-import { AddOrganizationDialog } from './AddOrganizationDialog'
+import { CreateOrganizationDialog } from './CreateOrganizationDialog'
+import { TablePageLayout } from '@/components/layout/TablePageLayput'
 
 export const OrganizationTable = () => {
   const organizations = useOrganizationStore((state) => state.organizations)
 
   return (
-    <div className="container mx-auto py-10">
-      <h1 className="text-2xl font-bold mb-4">組織一覧</h1>
-      <div>
-        <AddOrganizationDialog />
-      </div>
+    <TablePageLayout title="組織一覧" action={<CreateOrganizationDialog />}>
       <AppTable columns={organizationColumns} data={organizations} />
-    </div>
+    </TablePageLayout>
   )
 }

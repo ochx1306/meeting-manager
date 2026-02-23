@@ -1,4 +1,5 @@
 import { AddMeetingDialog } from './components/AddMeetingDialog'
+import { awaitMeetingHydration } from './meeting-store'
 import { MeetingTable } from './components/MeetingTable'
 
 const MeetingPage = () => {
@@ -13,4 +14,6 @@ const MeetingPage = () => {
   )
 }
 
-export { MeetingPage as Component }
+const MeetingPageLoader = async () => awaitMeetingHydration()
+
+export { MeetingPage as Component, MeetingPageLoader as loader }

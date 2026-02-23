@@ -5,6 +5,6 @@ const OrganizationPage = () => {
   return <OrganizationTable />
 }
 
-const organizationPageLoader = () => awaitOrganizationHydration()
+const organizationPageLoader = async () => awaitOrganizationHydration()
 
 export { OrganizationPage as Component, organizationPageLoader as loader }

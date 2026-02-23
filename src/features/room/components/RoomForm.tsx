@@ -22,7 +22,7 @@ interface RoomFormProps {
 export const RoomForm = ({ initialRoom, onSuccess }: RoomFormProps) => {
   const isEditMode = !!initialRoom
 
-  const addRoom = useRoomStore((state) => state.addRoom)
+  const addRoom = useRoomStore((state) => state.createRoom)
   const updateRoom = useRoomStore((state) => state.updateRoom)
 
   const form = useForm<Room>({

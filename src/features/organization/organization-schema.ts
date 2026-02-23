@@ -1,5 +1,4 @@
 import { z } from 'zod'
-// import { appIdSchema } from '@/lib/app-id'
 
 export const organizationSchema = z.object({
   id: z.uuid(),
@@ -8,7 +7,7 @@ export const organizationSchema = z.object({
   parentId: z.string().nullable(),
   validFrom: z.date(),
   isIndefinite: z.boolean(),
-  validTo: z.date().optional(),
+  validTo: z.date().nullable(),
   isProvisional: z.boolean(),
   isSuspended: z.boolean(),
 })

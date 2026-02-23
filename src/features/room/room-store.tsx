@@ -5,7 +5,7 @@ import type { Room } from './room-schema'
 type RoomState = {
   rooms: Room[]
   setRooms: (rooms: Room[]) => void
-  addRoom: (room: Room) => void
+  createRoom: (room: Room) => void
   updateRoom: (room: Room) => void
   deleteRoom: (id: string) => void
   getRoom: (id: string) => Room
@@ -16,7 +16,7 @@ export const useRoomStore = createAppStore<RoomState>(
   (set, get) => ({
     rooms: [],
     setRooms: (rooms: Room[]) => set({ rooms }),
-    addRoom: (room: Room) =>
+    createRoom: (room: Room) =>
       set((state) => ({ rooms: [...state.rooms, room] })),
     updateRoom: (room: Room) => {
       set((state) => ({
