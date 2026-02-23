@@ -5,7 +5,7 @@ import { CreateRoomDialog } from './CreateRoomDialog'
 import { TablePageLayout } from '@/components/layout/TablePageLayput'
 
 export const RoomTable = () => {
-  const rooms = useRoomStore((state) => state.rooms)
+  const rooms = useRoomStore((state) => state.items)
 
   return (
     <TablePageLayout title="会議室一覧" action={<CreateRoomDialog />}>

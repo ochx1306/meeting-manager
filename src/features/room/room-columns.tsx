@@ -16,10 +16,9 @@ export const roomColumns: ColumnDef<Room>[] = [
     id: 'actions',
     header: '操作',
     cell: ({ row }) => {
-      const id = row.id
       return (
         <div className="flex gap-2">
-          <UpdateRoomDialog id={id} />
+          <UpdateRoomDialog room={row} />
           <DeleteRoomButton room={row} />
         </div>
       )

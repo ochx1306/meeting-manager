@@ -1,0 +1,23 @@
+import type { ComponentType } from 'react'
+import { CreateIconButton } from '@/components/icon-buttons'
+import { AppDialog } from '@/components/dialog/AppDialog'
+import type { CrudFormProps } from './crud-form'
+
+interface CreateDialogProps<T> {
+  featureName: string
+  CrudForm: ComponentType<CrudFormProps<T>>
+}
+
+export const CreateDialog = <T,>({
+  featureName,
+  CrudForm,
+}: CreateDialogProps<T>) => {
+  return (
+    <AppDialog
+      trigger={<CreateIconButton label="作成" />}
+      title={`${featureName}を作成`}
+    >
+      {(onSuccess) => <CrudForm onSuccess={onSuccess} />}
+    </AppDialog>
+  )
+}
