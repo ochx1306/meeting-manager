@@ -26,7 +26,7 @@ export const RoleForm = ({
   const form = useForm<RoleFormValues>({
     resolver: zodResolver(roleFormSchema),
     mode: 'onSubmit',
-    defaultValues: defaultValues ?? { id: generateAppId(), name: '' },
+    defaultValues: defaultValues ?? { name: '' },
   })
 
   const onSubmit = (data: RoleFormValues) => {
@@ -54,7 +54,7 @@ export const RoleForm = ({
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>役職名</FormLabel>
               <FormControl>
                 <Input placeholder="役職名" {...field} />
               </FormControl>
