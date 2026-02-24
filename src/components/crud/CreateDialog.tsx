@@ -17,7 +17,7 @@ export const CreateDialog = <T,>({
       trigger={<CreateIconButton label="作成" />}
       title={`${featureName}を作成`}
     >
-      {(onSuccess) => <CrudForm onSuccess={onSuccess} />}
+      {(onSuccess) => <CrudForm mode="create" onSuccess={onSuccess} />}
     </AppDialog>
   )
 }

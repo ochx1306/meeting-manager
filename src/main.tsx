@@ -18,6 +18,10 @@ const router = createBrowserRouter([
     lazy: () => import('@/features/organization/OrganizationPage'),
   },
   {
+    path: 'role',
+    lazy: () => import('@/features/role/RolePage'),
+  },
+  {
     path: '/room',
     lazy: () => import('@/features/room/RoomPage'),
   },

@@ -19,7 +19,9 @@ export const UpdateDialog = <T,>({
       trigger={<UpdateIconButton label="更新" />}
       title={`${featureName}を更新`}
     >
-      {(onSuccess) => <CrudForm initialItem={item} onSuccess={onSuccess} />}
+      {(onSuccess) => (
+        <CrudForm mode="update" defaultValues={item} onSuccess={onSuccess} />
+      )}
     </AppDialog>
   )
 }

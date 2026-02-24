@@ -1,4 +1,5 @@
 export interface CrudFormProps<T> {
-  initialItem?: T
+  mode: 'create' | 'update'
+  defaultValues?: T
   onSuccess: () => void
 }
