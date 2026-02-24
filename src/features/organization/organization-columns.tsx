@@ -1,6 +1,6 @@
 import { Badge } from '@/components/ui/badge'
 import type { ColumnDef } from '@/components/data-table'
-import { UpdateOrganizationDialog } from './components/UpdateOrganizationDailog'
+import { UpdateOrganizationDialog } from './components/UpdateOrganizationDialog'
 import { DeleteOrganizationButton } from './components/DeleteOrganizationButton'
 import type { Organization } from './organization-schema'
 import { useOrganizationStore } from './organization-store'
