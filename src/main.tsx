@@ -22,8 +22,8 @@ const router = createBrowserRouter([
     lazy: () => import('@/features/role/RolePage'),
   },
   {
-    path: '/room',
-    lazy: () => import('@/features/room/RoomPage'),
+    path: '/meeting-room',
+    lazy: () => import('@/features/meeting-room/MeetingRoomPage'),
   },
   {
     path: '/meeting',

@@ -1,6 +1,5 @@
+import { useCrudForm, type CrudFormProps } from '@/lib/use-crud-form'
 import { BaseForm, BaseTextInput } from '@/components/form/'
-import { useCrudForm } from '@/lib/use-crud-form'
-import type { CrudFormProps } from '@/components/crud/crud-form'
 import { roleFormSchema, type Role, type RoleFormValues } from '../role-schema'
 import { useRoleStore } from '../role-store'
 

@@ -13,4 +13,4 @@ export const useRoleStore = createAppStore<RoleState>(
   }
 )
 
-export const awaitRoleHydration = createHydrationAwaiter(useRoleStore)
+export const awaitRoleStoreHydration = createHydrationAwaiter(useRoleStore)

@@ -2,10 +2,21 @@ import { z } from 'zod'
 import { useForm, type UseFormProps, type FieldValues } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { generateAppId } from '@/lib/app-id'
+import type { AppEntity } from './app-entity'
 
-interface UseCrudFormProps<TFormValues extends FieldValues, TEntity>
-  extends UseFormProps<TFormValues> {
-  crudMode: 'create' | 'update'
+type CrudMode = 'create' | 'update'
+
+export interface CrudFormProps<T extends AppEntity> {
+  crudMode: CrudMode
+  defaultValues?: T
+  onSuccess: () => void
+}
+
+interface UseCrudFormProps<
+  TFormValues extends FieldValues,
+  TEntity extends AppEntity,
+> extends UseFormProps<TFormValues> {
+  crudMode: CrudMode
   schema?: z.ZodType<any, any, any>
   entityId?: string
   transform?: (data: TFormValues) => Omit<TEntity, 'id'>
@@ -14,7 +25,10 @@ interface UseCrudFormProps<TFormValues extends FieldValues, TEntity>
   onSuccess?: () => void
 }
 
-export const useCrudForm = <TFormValues extends FieldValues, TEntity>({
+export const useCrudForm = <
+  TFormValues extends FieldValues,
+  TEntity extends AppEntity,
+>({
   crudMode,
   schema,
   entityId,

@@ -34,7 +34,7 @@ export const menus = [
   },
   {
     id: 4,
-    to: 'room',
+    to: 'meeting-room',
     title: '会議室を管理',
     description: '会議室の登録、変更、削除',
     icon: <Monitor />,
