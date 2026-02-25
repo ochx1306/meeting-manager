@@ -5,7 +5,7 @@ import { roleFormSchema, type Role, type RoleFormValues } from '../role-schema'
 import { useRoleStore } from '../role-store'
 
 export const RoleForm = ({
-  mode,
+  crudMode,
   defaultValues,
   onSuccess,
 }: CrudFormProps<Role>) => {
@@ -14,7 +14,7 @@ export const RoleForm = ({
 
   const { form, onSubmit } = useCrudForm<RoleFormValues, Role>({
     defaultValues: defaultValues ?? { name: '' },
-    crudMode: mode,
+    crudMode,
     schema: roleFormSchema,
     entityId: defaultValues?.id,
     createItem,

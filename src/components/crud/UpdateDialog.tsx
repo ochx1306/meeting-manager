@@ -20,7 +20,11 @@ export const UpdateDialog = <T,>({
       title={`${featureName}を更新`}
     >
       {(onSuccess) => (
-        <CrudForm mode="update" defaultValues={item} onSuccess={onSuccess} />
+        <CrudForm
+          crudMode="update"
+          defaultValues={item}
+          onSuccess={onSuccess}
+        />
       )}
     </BaseDialog>
   )
