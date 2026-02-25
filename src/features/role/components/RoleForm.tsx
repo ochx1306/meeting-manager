@@ -1,16 +1,5 @@
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { generateAppId } from '@/lib/app-id'
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
+import { BaseForm, BaseTextInput } from '@/components/form/'
+import { useCrudForm } from '@/lib/use-crud-form'
 import type { CrudFormProps } from '@/components/crud/crud-form'
 import { roleFormSchema, type Role, type RoleFormValues } from '../role-schema'
 import { useRoleStore } from '../role-store'
@@ -23,47 +12,24 @@ export const RoleForm = ({
   const createItem = useRoleStore((state) => state.createItem)
   const updateItem = useRoleStore((state) => state.updateItem)
 
-  const form = useForm<RoleFormValues>({
-    resolver: zodResolver(roleFormSchema),
-    mode: 'onSubmit',
+  const { form, onSubmit } = useCrudForm<RoleFormValues, Role>({
     defaultValues: defaultValues ?? { name: '' },
+    crudMode: mode,
+    schema: roleFormSchema,
+    entityId: defaultValues?.id,
+    createItem,
+    updateItem,
+    onSuccess,
   })
 
-  const onSubmit = (data: RoleFormValues) => {
-    if (mode === 'create') {
-      createItem({
-        ...data,
-        id: generateAppId(),
-      })
-    } else {
-      if (!defaultValues?.id) return
-      updateItem({
-        ...data,
-        id: defaultValues.id,
-      })
-    }
-
-    onSuccess?.()
-  }
-
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>役職名</FormLabel>
-              <FormControl>
-                <Input placeholder="役職名" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">保存</Button>
-      </form>
-    </Form>
+    <BaseForm form={form} onSubmit={onSubmit}>
+      <BaseTextInput
+        control={form.control}
+        name="name"
+        label="役職名"
+        placeholder="役職名"
+      />
+    </BaseForm>
   )
 }

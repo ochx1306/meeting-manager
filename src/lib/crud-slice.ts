@@ -1,10 +1,7 @@
 import type { StateCreator } from 'zustand'
+import type { AppEntity } from './app-entity'
 
-export interface BaseEntity {
-  id: string
-}
-
-export type CrudState<T extends BaseEntity> = {
+export type CrudState<T extends AppEntity> = {
   items: T[]
   setItems: (items: T[]) => void
   createItem: (item: T) => void
@@ -14,7 +11,7 @@ export type CrudState<T extends BaseEntity> = {
 }
 
 export const createCrudSlice =
-  <T extends BaseEntity, State extends CrudState<T>>(): StateCreator<
+  <T extends AppEntity, State extends CrudState<T>>(): StateCreator<
     State,
     [],
     [],
@@ -41,3 +38,9 @@ export const createCrudSlice =
       ),
     getItem: (id) => get().items.find((i) => i.id === id),
   })
+
+export interface CrudStoreHook<T extends AppEntity> {
+  <U>(selector: (state: CrudState<T>) => U): U
+  (): CrudState<T>
+  getState: () => CrudState<T>
+}

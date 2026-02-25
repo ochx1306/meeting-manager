@@ -1,9 +1,12 @@
-import { generateAppId, type AppID } from '@/lib/app-id'
+import { z } from 'zod'
+import { appIdSchema, generateAppId, type AppID } from '@/lib/app-id'
 
-export type AppEntity = {
-  id: AppID
-  name: string
-}
+export const appEntitySchema = z.object({
+  id: appIdSchema,
+  name: z.string().min(1, '名前を入力してください'),
+})
+
+export type AppEntity = z.infer<typeof appEntitySchema>
 
 export const cloneWithNewId = <T extends AppEntity>(entity: T): T => {
   const clonedEntity = structuredClone(entity)
@@ -19,7 +22,7 @@ export const cloneWithCopiedSuffix = <T extends AppEntity>(
   const baseSuffix = ' - コピー'
 
   const escapedSuffix = baseSuffix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-  const regex = new RegExp(`^(.*?)(?:${escapedSuffix}(?:\\(\\d+\\))?)?$`)
+  const regex = new RegExp(`^(.*?)(?:${escapedSuffix}(?:\\s\\(\\d+\\))?)?$`)
   const match = entity.name.match(regex)
 
   const baseName = match ? match[1] : entity.name
@@ -28,12 +31,12 @@ export const cloneWithCopiedSuffix = <T extends AppEntity>(
 
   let count = 0
   const generateSuffix = () => {
-    return count === 0 ? baseSuffix : `${baseSuffix}(${count + 1})`
+    return count === 0 ? baseSuffix : `${baseSuffix} (${count + 1})`
   }
 
   let newName = `${baseName}${generateSuffix()}`
 
-  while (existingNames.has(newName)) {
+  while (newName === entity.name || existingNames.has(newName)) {
     count++
     newName = `${baseName}${generateSuffix()}`
   }

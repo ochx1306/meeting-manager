@@ -1,15 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
+import { BaseForm, BaseTextInput, BaseNumberInput } from '@/components/form'
 import { generateAppId } from '@/lib/app-id'
 import { roomSchema, type Room } from '../room-schema'
 import { useRoomStore } from '../room-store'
@@ -47,36 +38,19 @@ export const RoomForm = ({ initialRoom, onSuccess }: RoomFormProps) => {
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>会議室名</FormLabel>
-              <FormControl>
-                <Input placeholder="Room Name" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="capacity"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>定員</FormLabel>
-              <FormControl>
-                <Input placeholder="Capacity" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Submit</Button>
-      </form>
-    </Form>
+    <BaseForm form={form} onSubmit={onSubmit}>
+      <BaseTextInput
+        control={form.control}
+        name="name"
+        label="会議室名"
+        placeholder="会議室名"
+      />
+      <BaseNumberInput
+        control={form.control}
+        name="capacity"
+        label="定員"
+        placeholder="定員"
+      />
+    </BaseForm>
   )
 }

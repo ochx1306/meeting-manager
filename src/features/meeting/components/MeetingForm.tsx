@@ -37,7 +37,7 @@ export const MeetingForm = ({
   const addMeeting = useMeetingStore((state) => state.addMeeting)
   const updateMeeting = useMeetingStore((state) => state.updateMeeting)
 
-  const rooms = useRoomStore((state) => state.rooms)
+  const items = useRoomStore((state) => state.items)
   const getSortedRoomsByCapacity = useRoomStore(
     (state) => state.getSortedRoomsByCapacity
   )
@@ -51,7 +51,7 @@ export const MeetingForm = ({
           id: generateAppId(),
           title: '',
           date: new Date(),
-          roomId: rooms[0].id,
+          roomId: items[0].id,
           // participants
           isReception: false,
         },

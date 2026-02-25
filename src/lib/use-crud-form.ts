@@ -1,0 +1,55 @@
+import { z } from 'zod'
+import { useForm, type UseFormProps, type FieldValues } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { generateAppId } from '@/lib/app-id'
+
+interface UseCrudFormProps<TFormValues extends FieldValues, TEntity>
+  extends UseFormProps<TFormValues> {
+  crudMode: 'create' | 'update'
+  schema?: z.ZodType<any, any, any>
+  entityId?: string
+  transform?: (data: TFormValues) => Omit<TEntity, 'id'>
+  createItem: (item: TEntity) => void
+  updateItem: (item: TEntity) => void
+  onSuccess?: () => void
+}
+
+export const useCrudForm = <TFormValues extends FieldValues, TEntity>({
+  crudMode,
+  schema,
+  entityId,
+  transform,
+  createItem,
+  updateItem,
+  onSuccess,
+  resolver,
+  ...useFormOptions
+}: UseCrudFormProps<TFormValues, TEntity>) => {
+  const finalResolver = resolver || (schema ? zodResolver(schema) : undefined)
+
+  const form = useForm<TFormValues>({
+    resolver: finalResolver,
+    ...useFormOptions,
+  })
+
+  const onSubmit = (data: TFormValues) => {
+    const baseData = transform ? transform(data) : data
+
+    if (crudMode === 'create') {
+      createItem({
+        ...baseData,
+        id: generateAppId(),
+      } as unknown as TEntity)
+    } else {
+      if (!entityId) return
+      updateItem({
+        ...baseData,
+        id: entityId,
+      } as unknown as TEntity)
+    }
+
+    onSuccess?.()
+  }
+
+  return { form, onSubmit }
+}

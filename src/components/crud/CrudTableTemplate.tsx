@@ -4,24 +4,29 @@ import type { ColumnDef } from '@/components/data-table/column'
 import type { CrudFormProps } from './crud-form'
 import { CreateDialog } from './CreateDialog'
 import { UpdateDialog } from './UpdateDialog'
+import { DeleteButton } from './DeleteButton'
 
-interface CrudTableTemplateProps<T> {
+import type { CrudStoreHook } from '@/lib/crud-slice'
+import type { AppEntity } from '@/lib/app-entity'
+
+interface CrudTableTemplateProps<T extends AppEntity> {
   featureName: string
-  data: T[]
+  crudStore: CrudStoreHook<T>
   columns: ColumnDef<T>[]
   CrudForm: ComponentType<CrudFormProps<T>>
-  DeleteAction: ComponentType<{ item: T }>
   PrefixActions?: ComponentType<{ item: T }>
 }
 
-export const CrudTableTemplate = <T,>({
+export const CrudTableTemplate = <T extends AppEntity>({
   featureName,
-  data,
+  crudStore,
   columns,
   CrudForm,
-  DeleteAction,
   PrefixActions,
 }: CrudTableTemplateProps<T>) => {
+  const items = crudStore((state) => state.items)
+  const deleteItem = crudStore((state) => state.deleteItem)
+
   const tableColumns = useMemo<ColumnDef<T>[]>(() => {
     return [
       ...columns,
@@ -38,13 +43,16 @@ export const CrudTableTemplate = <T,>({
                 item={item}
                 CrudForm={CrudForm}
               />
-              <DeleteAction item={item} />
+              <DeleteButton
+                itemName={item.name}
+                handleDelete={() => deleteItem(item.id)}
+              />
             </div>
           )
         },
       },
     ]
-  }, [columns, PrefixActions, featureName, CrudForm, DeleteAction])
+  }, [columns, PrefixActions, featureName, CrudForm, deleteItem])
 
   return (
     <div className="container mx-auto py-10">
@@ -52,7 +60,11 @@ export const CrudTableTemplate = <T,>({
         <h1 className="text-2xl font-bold">{featureName}一覧</h1>
         <CreateDialog featureName={featureName} CrudForm={CrudForm} />
       </div>
-      <AppTable columns={tableColumns} data={data} />
+      <AppTable
+        columns={tableColumns}
+        data={items}
+        getRowId={(item) => item.id}
+      />
     </div>
   )
 }
