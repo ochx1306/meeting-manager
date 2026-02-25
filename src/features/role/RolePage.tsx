@@ -1,5 +1,5 @@
 import { CrudTableTemplate } from '@/components/crud/CrudTableTemplate'
-import { useRoleStore } from './role-store'
+import { useRoleStore, awaitRoleHydration } from './role-store'
 import { RoleForm } from './components/RoleForm'
 import { roleColumns } from './role-columns'
 
@@ -14,4 +14,6 @@ const RolePage = () => {
   )
 }
 
-export { RolePage as Component }
+const rolePageLoader = async () => awaitRoleHydration()
+
+export { RolePage as Component, rolePageLoader as loader }
