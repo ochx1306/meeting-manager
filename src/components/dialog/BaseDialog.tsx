@@ -8,19 +8,19 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 
-interface AppDialogProps {
+interface BaseDialogProps {
   trigger: ReactNode
   title: string
   description?: string
   children: (onSuccess: () => void) => ReactNode
 }
 
-export const AppDialog = ({
+export const BaseDialog = ({
   trigger,
   title,
   description,
   children,
-}: AppDialogProps) => {
+}: BaseDialogProps) => {
   const [open, setOpen] = useState(false)
 
   const handleSuccess = () => setOpen(false)

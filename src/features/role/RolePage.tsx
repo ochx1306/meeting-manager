@@ -1,13 +1,17 @@
-import { CrudTableTemplate } from '@/components/crud/CrudTableTemplate'
+import { CrudTable } from '@/components/crud/CrudTable'
 import { useRoleStore, awaitRoleHydration } from './role-store'
 import { RoleForm } from './components/RoleForm'
 import { roleColumns } from './role-columns'
 
 const RolePage = () => {
+  const items = useRoleStore((state) => state.items)
+  const deleteItem = useRoleStore((state) => state.deleteItem)
+
   return (
-    <CrudTableTemplate
+    <CrudTable
       featureName="役職"
-      crudStore={useRoleStore}
+      items={items}
+      deleteItem={deleteItem}
       columns={roleColumns}
       CrudForm={RoleForm}
     />

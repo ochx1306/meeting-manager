@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 
-export type AppCardProps = Omit<HTMLAttributes<HTMLDivElement>, 'onClick'> & {
+export type BaseCardProps = Omit<HTMLAttributes<HTMLDivElement>, 'onClick'> & {
   title: string
   description?: ReactNode
   children?: ReactNode
@@ -17,7 +17,7 @@ export type AppCardProps = Omit<HTMLAttributes<HTMLDivElement>, 'onClick'> & {
   onClick?: () => void
 }
 
-export const AppCard = ({
+export const BaseCard = ({
   className,
   title,
   description,
@@ -25,7 +25,7 @@ export const AppCard = ({
   footer,
   onClick,
   ...props
-}: AppCardProps) => {
+}: BaseCardProps) => {
   const isClickable = !!onClick
 
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {

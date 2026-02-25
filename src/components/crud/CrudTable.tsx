@@ -1,32 +1,29 @@
 import { useMemo, type ComponentType } from 'react'
-import { AppTable } from '@/components/data-table'
+import { BaseDataTable } from '@/components/data-table'
 import type { ColumnDef } from '@/components/data-table/column'
+import type { AppEntity } from '@/lib/app-entity'
 import type { CrudFormProps } from './crud-form'
 import { CreateDialog } from './CreateDialog'
 import { UpdateDialog } from './UpdateDialog'
 import { DeleteButton } from './DeleteButton'
 
-import type { CrudStoreHook } from '@/lib/crud-slice'
-import type { AppEntity } from '@/lib/app-entity'
-
-interface CrudTableTemplateProps<T extends AppEntity> {
+interface CrudTableProps<T extends AppEntity> {
   featureName: string
-  crudStore: CrudStoreHook<T>
+  items: T[]
+  deleteItem: (id: T['id']) => void
   columns: ColumnDef<T>[]
   CrudForm: ComponentType<CrudFormProps<T>>
   PrefixActions?: ComponentType<{ item: T }>
 }
 
-export const CrudTableTemplate = <T extends AppEntity>({
+export const CrudTable = <T extends AppEntity>({
   featureName,
-  crudStore,
+  items,
+  deleteItem,
   columns,
   CrudForm,
   PrefixActions,
-}: CrudTableTemplateProps<T>) => {
-  const items = crudStore((state) => state.items)
-  const deleteItem = crudStore((state) => state.deleteItem)
-
+}: CrudTableProps<T>) => {
   const tableColumns = useMemo<ColumnDef<T>[]>(() => {
     return [
       ...columns,
@@ -60,7 +57,7 @@ export const CrudTableTemplate = <T extends AppEntity>({
         <h1 className="text-2xl font-bold">{featureName}一覧</h1>
         <CreateDialog featureName={featureName} CrudForm={CrudForm} />
       </div>
-      <AppTable
+      <BaseDataTable
         columns={tableColumns}
         data={items}
         getRowId={(item) => item.id}

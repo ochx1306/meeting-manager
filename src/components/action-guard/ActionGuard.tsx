@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from 'react'
-import { ConfirmDialog } from '../confirm-dialog/ConfirmDialog'
+import { BaseConfirmDialog } from '../confirm-dialog/BaseConfirmDialog'
 
 interface ActionGuardProps {
   onAction: () => void
@@ -37,7 +37,7 @@ const ActionGuard = ({
 
   return (
     <>
-      <ConfirmDialog
+      <BaseConfirmDialog
         open={open}
         onOpenChange={setOpen}
         title={title}

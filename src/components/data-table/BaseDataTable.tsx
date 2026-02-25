@@ -8,17 +8,17 @@ import {
 } from '@/components/ui/table'
 import type { ColumnDef } from './column'
 
-interface AppTableProps<TData> {
+interface BaseDataTableProps<TData> {
   columns: ColumnDef<TData>[]
   data: TData[]
   getRowId?: (row: TData) => string | number
 }
 
-const AppTable = <TData,>({
+const BaseDataTable = <TData,>({
   columns,
   data,
   getRowId,
-}: AppTableProps<TData>) => {
+}: BaseDataTableProps<TData>) => {
   // const renderHeader = (column: ColumnDef<TData>) => {
   //   return typeof column.header === 'function'
   //     ? column.header({ column })
@@ -56,4 +56,4 @@ const AppTable = <TData,>({
   )
 }
 
-export { AppTable }
+export { BaseDataTable }

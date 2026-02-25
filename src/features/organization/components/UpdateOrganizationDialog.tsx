@@ -1,5 +1,5 @@
 import { UpdateIconButton } from '@/components/icon-buttons'
-import { AppDialog } from '@/components/dialog/AppDialog'
+import { BaseDialog } from '@/components/dialog/BaseDialog'
 import type { Organization } from '../organization-schema'
 import { OrganizationForm } from './OrganizationForm'
 
@@ -11,7 +11,7 @@ export const UpdateOrganizationDialog = ({
   organization,
 }: UpdateOrganizationDialogProps) => {
   return (
-    <AppDialog
+    <BaseDialog
       trigger={<UpdateIconButton label="更新" />}
       title="組織を更新"
       description="更新する組織の情報を入力してください。"
@@ -22,6 +22,6 @@ export const UpdateOrganizationDialog = ({
           onSuccess={onSuccess}
         />
       )}
-    </AppDialog>
+    </BaseDialog>
   )
 }

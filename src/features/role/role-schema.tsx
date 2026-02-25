@@ -1,8 +1,7 @@
 import { z } from 'zod'
-import { appIdSchema } from '@/lib/app-id'
+import { appEntitySchema } from '@/lib/app-entity'
 
-export const roleSchema = z.object({
-  id: appIdSchema,
+export const roleSchema = appEntitySchema.extend({
   name: z.string().min(1, '役職名を入力してください'),
 })
 export type Role = z.infer<typeof roleSchema>

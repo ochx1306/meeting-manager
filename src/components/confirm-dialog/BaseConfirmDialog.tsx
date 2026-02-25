@@ -9,7 +9,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 
-interface ConfirmDialogProps {
+interface BaseConfirmDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   title: string
@@ -19,7 +19,7 @@ interface ConfirmDialogProps {
   onAction: () => void
 }
 
-const ConfirmDialog = ({
+const BaseConfirmDialog = ({
   open,
   onOpenChange,
   title,
@@ -27,7 +27,7 @@ const ConfirmDialog = ({
   cancelLabel = 'キャンセル',
   actionLabel = '実行',
   onAction,
-}: ConfirmDialogProps) => {
+}: BaseConfirmDialogProps) => {
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
@@ -46,4 +46,4 @@ const ConfirmDialog = ({
   )
 }
 
-export { ConfirmDialog, type ConfirmDialogProps }
+export { BaseConfirmDialog, type BaseConfirmDialogProps }

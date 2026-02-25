@@ -1,4 +1,4 @@
-import { AppTable } from './AppTable'
+import { BaseDataTable } from './BaseDataTable'
 import type { ColumnDef } from './column'
 
-export { AppTable, type ColumnDef }
+export { BaseDataTable, type ColumnDef }

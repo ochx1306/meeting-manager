@@ -5,7 +5,6 @@ export const appEntitySchema = z.object({
   id: appIdSchema,
   name: z.string().min(1, '名前を入力してください'),
 })
-
 export type AppEntity = z.infer<typeof appEntitySchema>
 
 export const cloneWithNewId = <T extends AppEntity>(entity: T): T => {

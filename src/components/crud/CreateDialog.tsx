@@ -1,6 +1,6 @@
 import type { ComponentType } from 'react'
 import { CreateIconButton } from '@/components/icon-buttons'
-import { AppDialog } from '@/components/dialog/AppDialog'
+import { BaseDialog } from '@/components/dialog/BaseDialog'
 import type { CrudFormProps } from './crud-form'
 
 interface CreateDialogProps<T> {
@@ -13,11 +13,11 @@ export const CreateDialog = <T,>({
   CrudForm,
 }: CreateDialogProps<T>) => {
   return (
-    <AppDialog
+    <BaseDialog
       trigger={<CreateIconButton label="作成" />}
       title={`${featureName}を作成`}
     >
       {(onSuccess) => <CrudForm mode="create" onSuccess={onSuccess} />}
-    </AppDialog>
+    </BaseDialog>
   )
 }
