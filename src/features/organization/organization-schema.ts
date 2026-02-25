@@ -14,4 +14,4 @@ export const organizationSchema = appEntitySchema.extend({
 export type Organization = z.infer<typeof organizationSchema>
 
 export const organizationFormSchema = organizationSchema.omit({ id: true })
-export type OrganizationForm = z.infer<typeof organizationFormSchema>
+export type OrganizationFormValues = z.infer<typeof organizationFormSchema>

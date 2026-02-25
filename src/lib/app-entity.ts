@@ -7,6 +7,10 @@ export const appEntitySchema = z.object({
 })
 export type AppEntity = z.infer<typeof appEntitySchema>
 
+export const convertToOptions = <T extends AppEntity>(entities: T[]) => {
+  return entities.map((entity) => ({ value: entity.id, label: entity.name }))
+}
+
 export const cloneWithNewId = <T extends AppEntity>(entity: T): T => {
   const clonedEntity = structuredClone(entity)
   const clonedEntityWithNewId = { ...clonedEntity, id: generateAppId() }

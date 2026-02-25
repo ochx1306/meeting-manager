@@ -1,8 +1,18 @@
 import { useEffect } from 'react'
 import { useWatch } from 'react-hook-form'
 import { useCrudForm, type CrudFormProps } from '@/lib/use-crud-form'
-import { BaseForm, BaseTextInput } from '@/components/form/'
-import { organizationSchema, type Organization } from '../organization-schema'
+import { convertToOptions } from '@/lib/app-entity'
+import {
+  BaseForm,
+  BaseTextInput,
+  BaseCheckbox,
+  BaseSelect,
+} from '@/components/form/'
+import {
+  organizationSchema,
+  type Organization,
+  type OrganizationFormValues,
+} from '../organization-schema'
 import { useOrganizationStore } from '../organization-store'
 import {
   FormField,
@@ -11,16 +21,7 @@ import {
   FormControl,
   FormMessage,
 } from '@/components/ui/form'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import { Calendar } from '@/components/ui/calendar'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Label } from '@/components/ui/label'
 
 export const OrganizationForm = ({
   crudMode,
@@ -31,7 +32,7 @@ export const OrganizationForm = ({
   const createItem = useOrganizationStore((state) => state.createItem)
   const updateItem = useOrganizationStore((state) => state.updateItem)
 
-  const { form, onSubmit } = useCrudForm<Organization, Organization>({
+  const { form, onSubmit } = useCrudForm<OrganizationFormValues, Organization>({
     defaultValues: defaultValues ?? {
       name: '',
       type: 'unit',
@@ -50,7 +51,7 @@ export const OrganizationForm = ({
     onSuccess,
   })
 
-  const id = form.watch('id')
+  // const id = form.watch('id')
   const isIndefinite = useWatch({
     control: form.control,
     name: 'isIndefinite',
@@ -62,6 +63,10 @@ export const OrganizationForm = ({
     }
   }, [isIndefinite, form])
 
+  // const handleSubmit = (data: OrganizationFormValues) => {
+  //   console.log(data)
+  // }
+
   return (
     <BaseForm form={form} onSubmit={onSubmit}>
       <BaseTextInput
@@ -70,59 +75,22 @@ export const OrganizationForm = ({
         label="組織名"
         placeholder="組織名"
       />
-      <FormField
+      <BaseSelect
         control={form.control}
         name="type"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>種別</FormLabel>
-            <Select
-              onValueChange={field.onChange}
-              defaultValue={field.value ?? 'unit'}
-            >
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="種別" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="unit">組織</SelectItem>
-                <SelectItem value="group">グループ</SelectItem>
-              </SelectContent>
-            </Select>
-            <FormMessage />
-          </FormItem>
-        )}
+        label="タイプ"
+        options={[
+          { label: 'ユニット', value: 'unit' },
+          { label: 'グループ', value: 'group' },
+        ]}
       />
-      <FormField
+      <BaseSelect
         control={form.control}
         name="parentId"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>親組織</FormLabel>
-            <Select
-              onValueChange={field.onChange}
-              defaultValue={field.value ?? '-'}
-            >
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="親組織" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="-">-</SelectItem>
-                {items
-                  .filter((item) => item.id !== id)
-                  .map((item) => (
-                    <SelectItem key={item.id} value={item.id}>
-                      {item.name}
-                    </SelectItem>
-                  ))}
-              </SelectContent>
-            </Select>
-            <FormMessage />
-          </FormItem>
-        )}
+        label="親組織"
+        allowClear={true}
+        // options={convertToOptions(items.filter((item) => item.id !== id))}
+        options={convertToOptions(items)}
       />
       <FormField
         control={form.control}
@@ -141,25 +109,10 @@ export const OrganizationForm = ({
           </FormItem>
         )}
       />
-      <FormField
+      <BaseCheckbox
         control={form.control}
         name="isIndefinite"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>活動終了日</FormLabel>
-            <FormControl>
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  name="isIndefinite-checkbox"
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-                <Label htmlFor="isIndefinite-checkbox">未定</Label>
-              </div>
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
+        label="活動終了日未定"
       />
       {!isIndefinite && (
         <FormField
@@ -180,44 +133,12 @@ export const OrganizationForm = ({
           )}
         />
       )}
-      <FormField
+      <BaseCheckbox
         control={form.control}
         name="isProvisional"
-        render={({ field }) => (
-          <FormItem>
-            <FormControl>
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  name="isProvisional-checkbox"
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-                <Label htmlFor="isProvisional-checkbox">仮認定</Label>
-              </div>
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
+        label="仮認定"
       />
-      <FormField
-        control={form.control}
-        name="isSuspended"
-        render={({ field }) => (
-          <FormItem>
-            <FormControl>
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  name="isSuspended-checkbox"
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-                <Label htmlFor="isSuspended-checkbox">休止中</Label>
-              </div>
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+      <BaseCheckbox control={form.control} name="isSuspended" label="休止中" />
     </BaseForm>
   )
 }
