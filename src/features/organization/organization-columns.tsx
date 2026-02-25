@@ -1,7 +1,5 @@
 import { Badge } from '@/components/ui/badge'
 import type { ColumnDef } from '@/components/data-table'
-import { UpdateOrganizationDialog } from './components/UpdateOrganizationDialog'
-import { DeleteOrganizationButton } from './components/DeleteOrganizationButton'
 import type { Organization } from './organization-schema'
 import { useOrganizationStore } from './organization-store'
 
@@ -25,7 +23,7 @@ export const organizationColumns: ColumnDef<Organization>[] = [
       const parentId = row.parentId
       if (!parentId) return <span className="text-muted-foreground">-</span>
 
-      const parent = useOrganizationStore.getState().getOrganization(parentId)
+      const parent = useOrganizationStore.getState().getItem(parentId)
       if (!parent) return <span className="text-muted-foreground">不明</span>
 
       return <div>{parent.name}</div>
@@ -50,18 +48,6 @@ export const organizationColumns: ColumnDef<Organization>[] = [
 
       const date = new Date(validTo)
       return <div>{date.toLocaleDateString()}</div>
-    },
-  },
-  {
-    id: 'actions',
-    header: '操作',
-    cell: ({ row }) => {
-      return (
-        <div className="flex gap-2">
-          <UpdateOrganizationDialog organization={row} />
-          <DeleteOrganizationButton organization={row} />
-        </div>
-      )
     },
   },
 ]
