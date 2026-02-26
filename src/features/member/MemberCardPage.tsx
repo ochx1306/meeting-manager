@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { toPng } from 'html-to-image'
-import type { AppId } from '@/lib/app-id'
+import { convertToShortAppId, type AppId } from '@/lib/app-id'
 import { formatEra } from '@/lib/formatter'
 import { generateQrCodeDataUrl } from '@/lib/qr-code'
 import {
@@ -31,7 +31,8 @@ const MemberCardPage = () => {
     let isMounted = true
     const fetchQrCode = async () => {
       try {
-        const url = await generateQrCodeDataUrl(item)
+        const shortId = convertToShortAppId(item.id)
+        const url = await generateQrCodeDataUrl(shortId)
         if (isMounted) {
           setQrCodeUrl(url)
         }
@@ -47,7 +48,6 @@ const MemberCardPage = () => {
     }
   }, [item])
 
-  // 早期リターンの前にフックを配置するため、itemがundefinedでもエラーにならないよう安全に値を計算します
   const organizationName = item
     ? (getOrganization(item.organizationId)?.name ?? '所属不明')
     : ''
@@ -69,7 +69,6 @@ const MemberCardPage = () => {
     }
   }, [fiscalYear, index, organizationName, roleName])
 
-  // すべてのフックの宣言が終わった後で、itemが存在しない場合の早期リターンを行います
   if (!item) {
     return (
       <div className="p-8 bg-gray-100 min-h-screen flex items-center justify-center">

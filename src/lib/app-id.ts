@@ -7,3 +7,7 @@ export type AppId = z.infer<typeof appIdSchema>
 export const generateAppId = (): AppId => {
   return crypto.randomUUID() as AppId
 }
+
+export const convertToShortAppId = (id: AppId): string => {
+  return id.substring(0, 13)
+}

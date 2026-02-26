@@ -46,8 +46,10 @@ const router = createBrowserRouter([
 const rootElement = document.getElementById('root')!
 
 createRoot(rootElement).render(
-  <StrictMode>
+  // <StrictMode>
+  <>
     <RouterProvider router={router} />
     <Toaster />
-  </StrictMode>
+  </>
+  // </StrictMode>
 )

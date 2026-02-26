@@ -7,7 +7,7 @@ import { useRoleStore } from '@/features/role/role-store'
 import { useMemberStore } from '../member-store'
 
 export const CreateAllMembersButton = () => {
-  const fiscalYear = 2026
+  const fiscalYear = 2025
 
   const organizations = useOrganizationStore((state) => state.items)
   const roles = useRoleStore((state) => state.items)
