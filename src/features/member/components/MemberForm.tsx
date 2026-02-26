@@ -1,7 +1,8 @@
 import { useCrudForm, type CrudFormProps } from '@/lib/use-crud-form'
+import { formatEra } from '@/lib/formatter'
 import type { AppID } from '@/lib/app-id'
 import { convertToOptions } from '@/lib/app-entity'
-import { BaseForm, BaseSelect } from '@/components/form/'
+import { BaseForm, BaseNumberInput, BaseSelect } from '@/components/form/'
 import { useRoleStore } from '@/features/role/role-store'
 import { useOrganizationStore } from '@/features/organization/organization-store'
 import {
@@ -25,9 +26,16 @@ export const MemberForm = ({
 
   const createItem = useMemberStore((state) => state.createItem)
   const updateItem = useMemberStore((state) => state.updateItem)
+  const countMember = useMemberStore((state) => state.countMember)
 
   const { form, onSubmit } = useCrudForm<MemberFormValues, Member>({
-    defaultValues: defaultValues ?? { name: ' ' },
+    defaultValues: defaultValues ?? {
+      name: '',
+      organizationId: organizations[0].id,
+      fiscalYear: new Date().getFullYear(),
+      roleId: roles[0].id,
+      index: 0,
+    },
     crudMode,
     formSchema: memberFormSchema,
     entityId: defaultValues?.id,
@@ -36,11 +44,14 @@ export const MemberForm = ({
     transform: (data) => {
       const organizationName = getOrganization(data.organizationId)?.name
       const roleName = getRole(data.roleId)?.name
+      const index = countMember(data)
 
       return {
-        name: `${organizationName} ${roleName}`,
+        ...data,
+        name: `${organizationName} ${formatEra(data.fiscalYear)} ${roleName} ${index + 1}`,
         organizationId: data.organizationId as AppID,
         roleId: data.roleId as AppID,
+        index,
       }
     },
     onSuccess,
@@ -59,6 +70,11 @@ export const MemberForm = ({
         name="organizationId"
         label="組織"
         options={convertToOptions(organizations)}
+      />
+      <BaseNumberInput
+        control={form.control}
+        name="fiscalYear"
+        label="年度（西暦）"
       />
       <BaseSelect
         control={form.control}

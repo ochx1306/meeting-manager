@@ -44,40 +44,47 @@ export const BaseSelect = <T extends FieldValues>({
     <FormField
       control={control}
       name={name}
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel>{label}</FormLabel>
-          <Select
-            onValueChange={(val) => {
-              field.onChange(val === UNSELECTED_VALUE ? null : val)
-            }}
-            value={
-              field.value === null ||
-              field.value === undefined ||
-              field.value === ''
-                ? UNSELECTED_VALUE
-                : String(field.value)
-            }
-          >
-            <FormControl>
-              <SelectTrigger>
-                <SelectValue placeholder={placeholder} />
-              </SelectTrigger>
-            </FormControl>
-            <SelectContent>
-              {allowClear && (
-                <SelectItem value={UNSELECTED_VALUE}>{clearLabel}</SelectItem>
-              )}
-              {options.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <FormMessage />
-        </FormItem>
-      )}
+      render={({ field }) => {
+        const isEmpty =
+          field.value === null ||
+          field.value === undefined ||
+          field.value === ''
+
+        const selectValue = isEmpty
+          ? allowClear
+            ? UNSELECTED_VALUE
+            : undefined
+          : String(field.value)
+
+        return (
+          <FormItem>
+            <FormLabel>{label}</FormLabel>
+            <Select
+              onValueChange={(val) => {
+                field.onChange(val === UNSELECTED_VALUE ? null : val)
+              }}
+              value={selectValue}
+            >
+              <FormControl>
+                <SelectTrigger>
+                  <SelectValue placeholder={placeholder} />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent>
+                {allowClear && (
+                  <SelectItem value={UNSELECTED_VALUE}>{clearLabel}</SelectItem>
+                )}
+                {options.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <FormMessage />
+          </FormItem>
+        )
+      }}
     />
   )
 }
