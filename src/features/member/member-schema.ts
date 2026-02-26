@@ -3,7 +3,6 @@ import { appIdSchema } from '@/lib/app-id'
 import { appEntitySchema } from '@/lib/app-entity'
 
 export const memberSchema = appEntitySchema.extend({
-  name: z.string(),
   organizationId: appIdSchema,
   fiscalYear: z
     .number()
@@ -13,5 +12,5 @@ export const memberSchema = appEntitySchema.extend({
 })
 export type Member = z.infer<typeof memberSchema>
 
-export const memberFormSchema = memberSchema.omit({ id: true })
+export const memberFormSchema = memberSchema.omit({ id: true, name: true })
 export type MemberFormValues = z.infer<typeof memberFormSchema>

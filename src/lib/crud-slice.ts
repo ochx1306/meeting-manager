@@ -6,8 +6,8 @@ export type CrudState<T extends AppEntity> = {
   setItems: (items: T[]) => void
   createItem: (item: T) => void
   updateItem: (item: T) => void
-  deleteItem: (id: string) => void
-  getItem: (id: string) => T | undefined
+  deleteItem: (id: AppEntity['id']) => void
+  getItem: (id: AppEntity['id']) => T | undefined
 }
 
 export const createCrudSlice =

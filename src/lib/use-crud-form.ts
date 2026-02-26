@@ -18,7 +18,7 @@ interface UseCrudFormProps<
 > extends UseFormProps<TFormValues> {
   crudMode: CrudMode
   formSchema?: z.ZodType<any, any, any>
-  entityId?: string
+  entityId?: TEntity['id']
   transform?: (data: TFormValues) => Omit<TEntity, 'id'>
   createItem: (item: TEntity) => void
   updateItem: (item: TEntity) => void
@@ -53,7 +53,7 @@ export const useCrudForm = <
     if (crudMode === 'create') {
       createItem({
         ...baseData,
-        id: generateAppId(),
+        id: entityId || generateAppId(),
       } as unknown as TEntity)
     } else {
       if (!entityId) return

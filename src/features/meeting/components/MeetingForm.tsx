@@ -1,131 +1,83 @@
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { useCrudForm, type CrudFormProps } from '@/lib/use-crud-form'
+import { convertToOptions } from '@/lib/app-entity'
+import { BaseForm, BaseTextInput, BaseSelect } from '@/components/form/'
 import {
-  Form,
   FormField,
   FormItem,
   FormLabel,
   FormControl,
   FormMessage,
 } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
 import { Calendar } from '@/components/ui/calendar'
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { Button } from '@/components/ui/button'
-import { generateAppId } from '@/lib/app-id'
-import { meetingSchema, type Meeting } from '../meeting-schema'
+  meetingFormSchema,
+  type Meeting,
+  type MeetingFormValues,
+} from '../meeting-schema'
 import { useMeetingStore } from '../meeting-store'
-import { useRoomStore } from '@/features/room/room-store'
-
-interface MeetingFormProps {
-  initialMeeting?: Meeting
-  onSuccess?: () => void
-}
+import { useMeetingRoomStore } from '@/features/meeting-room/meeting-room-store'
 
 export const MeetingForm = ({
-  initialMeeting,
+  crudMode,
+  defaultValues,
   onSuccess,
-}: MeetingFormProps) => {
-  const isEditMode = !!initialMeeting
+}: CrudFormProps<Meeting>) => {
+  const createItem = useMeetingStore((state) => state.createItem)
+  const updateItem = useMeetingStore((state) => state.updateItem)
 
-  const addMeeting = useMeetingStore((state) => state.addMeeting)
-  const updateMeeting = useMeetingStore((state) => state.updateMeeting)
-
-  const items = useRoomStore((state) => state.items)
-  const getSortedRoomsByCapacity = useRoomStore(
-    (state) => state.getSortedRoomsByCapacity
+  const meetingRooms = useMeetingRoomStore((state) => state.items)
+  const getSortedMeetingRoomsByCapacity = useMeetingRoomStore(
+    (state) => state.getSortedMeetingRoomsByCapacity
   )
-  const sortedRooms = getSortedRoomsByCapacity()
+  const sortedMeetingRooms = getSortedMeetingRoomsByCapacity()
 
-  const form = useForm<Meeting>({
-    resolver: zodResolver(meetingSchema),
-    defaultValues: isEditMode
-      ? initialMeeting
-      : {
-          id: generateAppId(),
-          title: '',
-          date: new Date(),
-          roomId: items[0].id,
-          // participants
-          isReception: false,
-        },
+  const { form, onSubmit } = useCrudForm<MeetingFormValues, Meeting>({
+    defaultValues: defaultValues ?? {
+      name: '',
+      date: new Date(),
+      meetingRoomId: meetingRooms[0].id,
+      memberIds: [],
+      isReception: false,
+    },
+    crudMode,
+    formSchema: meetingFormSchema,
+    entityId: defaultValues?.id,
+    createItem,
+    updateItem,
+    onSuccess,
   })
 
-  const onSubmit = (meeting: Meeting) => {
-    if (isEditMode) {
-      updateMeeting(meeting)
-    } else {
-      addMeeting(meeting)
-    }
-
-    onSuccess?.()
-  }
-
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>会議名</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="date"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>日付</FormLabel>
-              <FormControl>
-                <Calendar
-                  mode="single"
-                  selected={field.value}
-                  onSelect={field.onChange}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="roomId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>会議室</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="会議室" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {sortedRooms.map((room) => (
-                    <SelectItem key={room.id} value={room.id}>
-                      {room.name}（定員：{room.capacity}人）
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">保存</Button>
-      </form>
-    </Form>
+    <BaseForm form={form} onSubmit={onSubmit}>
+      <BaseTextInput
+        control={form.control}
+        name="name"
+        label="会議名"
+        placeholder="会議名"
+      />
+      <FormField
+        control={form.control}
+        name="date"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>日付</FormLabel>
+            <FormControl>
+              <Calendar
+                mode="single"
+                selected={field.value}
+                onSelect={field.onChange}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <BaseSelect
+        control={form.control}
+        name="meetingRoomId"
+        label="会議室"
+        options={convertToOptions(sortedMeetingRooms)}
+      />
+    </BaseForm>
   )
 }

@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useWatch } from 'react-hook-form'
+import { generateAppId } from '@/lib/app-id'
 import { useCrudForm, type CrudFormProps } from '@/lib/use-crud-form'
 import { convertToOptions } from '@/lib/app-entity'
 import {
@@ -31,6 +32,9 @@ export const OrganizationForm = ({
   const items = useOrganizationStore((state) => state.items)
   const createItem = useOrganizationStore((state) => state.createItem)
   const updateItem = useOrganizationStore((state) => state.updateItem)
+  const getItem = useOrganizationStore((state) => state.getItem)
+
+  const entityId = defaultValues ? defaultValues.id : generateAppId()
 
   const { form, onSubmit } = useCrudForm<OrganizationFormValues, Organization>({
     defaultValues: defaultValues ?? {
@@ -45,9 +49,23 @@ export const OrganizationForm = ({
     },
     crudMode,
     formSchema: organizationFormSchema,
-    entityId: defaultValues?.id,
+    entityId,
     createItem,
     updateItem,
+    transform: (data) => {
+      const path = [entityId]
+      if (data.parentId) {
+        const item = getItem(data.parentId)
+        if (item) {
+          path.unshift(...item.path)
+        }
+      }
+
+      return {
+        ...data,
+        path,
+      }
+    },
     onSuccess,
   })
 

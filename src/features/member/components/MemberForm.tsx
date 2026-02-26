@@ -30,7 +30,6 @@ export const MemberForm = ({
 
   const { form, onSubmit } = useCrudForm<MemberFormValues, Member>({
     defaultValues: defaultValues ?? {
-      name: '',
       organizationId: organizations[0].id,
       fiscalYear: new Date().getFullYear(),
       roleId: roles[0].id,
