@@ -8,6 +8,7 @@ import {
   PencilIcon,
   CopyIcon,
   TrashIcon,
+  ForwardIcon,
   type LucideProps,
 } from 'lucide-react'
 
@@ -31,4 +32,14 @@ const DeleteIcon: SemanticIcon = forwardRef((props, ref) => (
   <TrashIcon {...props} ref={ref} />
 ))
 
-export { CreateIcon, UpdateIcon, CopyToClipboardIcon, DeleteIcon }
+const OpenDetailIcon: SemanticIcon = forwardRef((props, ref) => (
+  <ForwardIcon {...props} ref={ref} />
+))
+
+export {
+  CreateIcon,
+  UpdateIcon,
+  CopyToClipboardIcon,
+  DeleteIcon,
+  OpenDetailIcon,
+}

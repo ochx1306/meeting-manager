@@ -1,6 +1,6 @@
 import { useCrudForm, type CrudFormProps } from '@/lib/use-crud-form'
 import { formatEra } from '@/lib/formatter'
-import type { AppID } from '@/lib/app-id'
+import type { AppId } from '@/lib/app-id'
 import { convertToOptions } from '@/lib/app-entity'
 import { BaseForm, BaseNumberInput, BaseSelect } from '@/components/form/'
 import { useRoleStore } from '@/features/role/role-store'
@@ -48,8 +48,8 @@ export const MemberForm = ({
       return {
         ...data,
         name: `${organizationName} ${formatEra(data.fiscalYear)} ${roleName} ${index + 1}`,
-        organizationId: data.organizationId as AppID,
-        roleId: data.roleId as AppID,
+        organizationId: data.organizationId as AppId,
+        roleId: data.roleId as AppId,
         index,
       }
     },

@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { appIdSchema, generateAppId, type AppID } from '@/lib/app-id'
+import { appIdSchema, generateAppId, type AppId } from '@/lib/app-id'
 
 export const appEntitySchema = z.object({
   id: appIdSchema,
@@ -55,22 +55,22 @@ export const cloneWithCopiedSuffix = <T extends AppEntity>(
 
 export const normalizeEntities = <T extends AppEntity>(
   entities: T[]
-): Record<AppID, T> => {
+): Record<AppId, T> => {
   return entities.reduce(
     (acc, entity) => {
       acc[entity.id] = entity
       return acc
     },
-    {} as Record<AppID, T>
+    {} as Record<AppId, T>
   )
 }
 
 export const denormalizeEntities = <T extends AppEntity>(
-  entityRecord: Record<AppID, T>
+  entityRecord: Record<AppId, T>
 ): T[] => {
   return Object.values(entityRecord)
 }
 
-export const extractIds = <T extends AppEntity>(entities: T[]): AppID[] => {
+export const extractIds = <T extends AppEntity>(entities: T[]): AppId[] => {
   return entities.map((entity) => entity.id)
 }

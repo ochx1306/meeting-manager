@@ -21,7 +21,7 @@ const MeetingPage = () => {
 }
 
 const MeetingPageLoader = async () => {
-  Promise.all([
+  await Promise.all([
     awaitMeetingStoreHydration(),
     awaitMeetingRoomStoreHydration(),
     awaitMemberStoreHydration(),

@@ -26,6 +26,10 @@ const router = createBrowserRouter([
     lazy: () => import('@/features/member/MemberPage'),
   },
   {
+    path: '/member/:id',
+    lazy: () => import('@/features/member/MemberCardPage'),
+  },
+  {
     path: '/meeting-room',
     lazy: () => import('@/features/meeting-room/MeetingRoomPage'),
   },

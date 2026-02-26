@@ -3,6 +3,8 @@ import { awaitOrganizationStoreHydration } from '../organization/organization-st
 import { awaitRoleStoreHydration } from '../role/role-store'
 import { useMemberStore, awaitMemberStoreHydration } from './member-store'
 import { MemberForm } from './components/MemberForm'
+import { CreateAllMembersButton } from './components/CreateAllMembersButton'
+import { OpenMemberDetailButton } from './components/OpenMemberDetailButton'
 import { memberColumns } from './member-columns'
 
 const MemberPage = () => {
@@ -12,16 +14,18 @@ const MemberPage = () => {
   return (
     <CrudTable
       featureName="メンバー"
+      HeaderActions={CreateAllMembersButton}
       items={items}
       deleteItem={deleteItem}
       columns={memberColumns}
       CrudForm={MemberForm}
+      PrefixActions={OpenMemberDetailButton}
     />
   )
 }
 
 const memberPageLoader = async () => {
-  Promise.all([
+  await Promise.all([
     awaitMemberStoreHydration(),
     awaitOrganizationStoreHydration(),
     awaitRoleStoreHydration(),

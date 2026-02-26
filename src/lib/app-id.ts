@@ -2,8 +2,8 @@ import { z } from 'zod'
 
 export const appIdSchema = z.uuid().brand<'AppID'>()
 
-export type AppID = z.infer<typeof appIdSchema>
+export type AppId = z.infer<typeof appIdSchema>
 
-export const generateAppId = (): AppID => {
-  return crypto.randomUUID() as AppID
+export const generateAppId = (): AppId => {
+  return crypto.randomUUID() as AppId
 }

@@ -9,6 +9,7 @@ import { DeleteButton } from './DeleteButton'
 
 interface CrudTableProps<T extends AppEntity> {
   featureName: string
+  HeaderActions?: ComponentType
   items: T[]
   deleteItem: (id: T['id']) => void
   columns: ColumnDef<T>[]
@@ -18,6 +19,7 @@ interface CrudTableProps<T extends AppEntity> {
 
 export const CrudTable = <T extends AppEntity>({
   featureName,
+  HeaderActions,
   items,
   deleteItem,
   columns,
@@ -55,7 +57,10 @@ export const CrudTable = <T extends AppEntity>({
     <div className="container mx-auto py-10">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">{featureName}一覧</h1>
-        <CreateDialog featureName={featureName} CrudForm={CrudForm} />
+        <div className="flex gap-2">
+          {HeaderActions && <HeaderActions />}
+          <CreateDialog featureName={featureName} CrudForm={CrudForm} />
+        </div>
       </div>
       <BaseDataTable
         columns={tableColumns}
