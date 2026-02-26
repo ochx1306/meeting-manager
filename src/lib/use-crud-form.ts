@@ -17,7 +17,7 @@ interface UseCrudFormProps<
   TEntity extends AppEntity,
 > extends UseFormProps<TFormValues> {
   crudMode: CrudMode
-  schema?: z.ZodType<any, any, any>
+  formSchema?: z.ZodType<any, any, any>
   entityId?: string
   transform?: (data: TFormValues) => Omit<TEntity, 'id'>
   createItem: (item: TEntity) => void
@@ -30,7 +30,7 @@ export const useCrudForm = <
   TEntity extends AppEntity,
 >({
   crudMode,
-  schema,
+  formSchema,
   entityId,
   transform,
   createItem,
@@ -39,7 +39,8 @@ export const useCrudForm = <
   resolver,
   ...useFormOptions
 }: UseCrudFormProps<TFormValues, TEntity>) => {
-  const finalResolver = resolver || (schema ? zodResolver(schema) : undefined)
+  const finalResolver =
+    resolver || (formSchema ? zodResolver(formSchema) : undefined)
 
   const form = useForm<TFormValues>({
     resolver: finalResolver,

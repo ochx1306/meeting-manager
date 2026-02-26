@@ -14,7 +14,7 @@ export const RoleForm = ({
   const { form, onSubmit } = useCrudForm<RoleFormValues, Role>({
     defaultValues: defaultValues ?? { name: '' },
     crudMode,
-    schema: roleFormSchema,
+    formSchema: roleFormSchema,
     entityId: defaultValues?.id,
     createItem,
     updateItem,

@@ -9,7 +9,7 @@ import {
   BaseSelect,
 } from '@/components/form/'
 import {
-  organizationSchema,
+  organizationFormSchema,
   type Organization,
   type OrganizationFormValues,
 } from '../organization-schema'
@@ -44,14 +44,13 @@ export const OrganizationForm = ({
       isSuspended: false,
     },
     crudMode,
-    schema: organizationSchema,
+    formSchema: organizationFormSchema,
     entityId: defaultValues?.id,
     createItem,
     updateItem,
     onSuccess,
   })
 
-  // const id = form.watch('id')
   const isIndefinite = useWatch({
     control: form.control,
     name: 'isIndefinite',
@@ -62,10 +61,6 @@ export const OrganizationForm = ({
       form.setValue('validTo', null)
     }
   }, [isIndefinite, form])
-
-  // const handleSubmit = (data: OrganizationFormValues) => {
-  //   console.log(data)
-  // }
 
   return (
     <BaseForm form={form} onSubmit={onSubmit}>
@@ -89,8 +84,9 @@ export const OrganizationForm = ({
         name="parentId"
         label="親組織"
         allowClear={true}
-        // options={convertToOptions(items.filter((item) => item.id !== id))}
-        options={convertToOptions(items)}
+        options={convertToOptions(
+          items.filter((item) => item.id !== defaultValues?.id)
+        )}
       />
       <FormField
         control={form.control}

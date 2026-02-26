@@ -18,7 +18,7 @@ export const MeetingRoomForm = ({
   const { form, onSubmit } = useCrudForm<MeetingRoomFormValues, MeetingRoom>({
     defaultValues: defaultValues ?? { name: '', capacity: 200 },
     crudMode,
-    schema: meetingRoomFormSchema,
+    formSchema: meetingRoomFormSchema,
     entityId: defaultValues?.id,
     createItem,
     updateItem,
