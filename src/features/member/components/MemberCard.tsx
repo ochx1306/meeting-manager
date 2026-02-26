@@ -1,5 +1,6 @@
 import type { RefObject } from 'react'
 import { formatEra } from '@/lib/formatter'
+import logo from '/images/asia-university-logo.png'
 
 interface MemberCardProps {
   organizationName: string
@@ -18,7 +19,9 @@ const MemberCard = ({
   qrCodeUrl,
   cardRef,
 }: MemberCardProps) => {
-  const LOGO_SRC = 'src/features/university-card/images/AsiaUniversity_Logo.png'
+  if (!qrCodeUrl.length) {
+    return null
+  }
 
   return (
     <div
@@ -28,11 +31,7 @@ const MemberCard = ({
       <div className="flex flex-1 overflow-hidden">
         <div className="flex-[1.5] flex flex-col pr-4 border-r border-gray-100">
           <div className="flex items-center gap-2 mb-6">
-            <img
-              src={LOGO_SRC}
-              alt="Asia University Logo"
-              className="w-8 h-8 object-contain"
-            />
+            <img src={logo} alt="Asia" className="w-8 h-8 object-contain" />
             <span className="text-sm font-bold text-blue-900 leading-tight">
               亜細亜大学
               <br />

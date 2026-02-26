@@ -6,7 +6,7 @@ import { getCryptoKey, encryptQrData, decryptQrData } from './crypto'
 export const generateQrCodeDataUrl = async (
   entity: AppEntity
 ): Promise<string> => {
-  const secretPhrase = import.meta.env.SECRET_PHRASE
+  const secretPhrase = import.meta.env.VITE_SECRET_PHRASE
 
   if (!secretPhrase) {
     throw new Error('Secret phrase is not defined')
@@ -31,7 +31,7 @@ export const generateQrCodeDataUrl = async (
 export const processScannedQrCode = async (
   scannedString: string
 ): Promise<AppEntity> => {
-  const secretPhrase = import.meta.env.SECRET_PHRASE
+  const secretPhrase = import.meta.env.VITE_SECRET_PHRASE
 
   if (!secretPhrase) {
     throw new Error('Secret phrase is not defined')
