@@ -1,87 +1,62 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { Html5Qrcode } from 'html5-qrcode'
 
-export const QrCodeReader = () => {
-  const [scannedResult, setScannedResult] = useState('')
+interface QrScannerProps {
+  onScanSuccess: (decodedText: string) => void
+}
+
+export default function QrScanner({ onScanSuccess }: QrScannerProps) {
+  const containerId = 'qr-reader-container'
+  const isScanning = useRef(false)
+  const html5QrCode = useRef<Html5Qrcode | null>(null)
 
   useEffect(() => {
-    // 【改善1】実験的機能：ブラウザ標準の爆速API（Barcode Detector）があれば使用する
-    const html5QrCode = new Html5Qrcode('qr-reader-container', {
-      experimentalFeatures: {
-        useBarCodeDetectorIfSupported: true,
-      },
-      verbose: true,
-    })
+    if (!html5QrCode.current) {
+      html5QrCode.current = new Html5Qrcode(containerId)
+    }
 
-    const startScanning = async () => {
+    const startScanner = async () => {
+      if (isScanning.current) return
+
       try {
-        await html5QrCode.start(
-          // 【改善2】PCのインカメラを指定しつつ、理想的な高解像度（フルHD）を要求する
-          {
-            facingMode: 'user',
-            // width: { ideal: 1920 },
-            // height: { ideal: 1080 },
-          },
+        await html5QrCode.current?.start(
+          { facingMode: 'user' },
           {
             fps: 10,
-            // 【改善3】qrboxはあえて設定せず、ビデオ領域全体からQRコードを探させる
-            // これにより、画面のどこに映っていても、どんなサイズでも解析しやすくなります
+            qrbox: { width: 250, height: 250 },
           },
           (decodedText) => {
-            setScannedResult(decodedText)
+            onScanSuccess(decodedText)
           },
-          () => {
-            // スキャン失敗時は何もしない
-          }
+          () => {}
         )
+        isScanning.current = true
       } catch (err) {
-        console.error('カメラの起動に失敗しました', err)
+        console.warn('カメラの起動に失敗しました:', err)
       }
     }
 
-    startScanning()
+    startScanner()
 
     return () => {
-      if (html5QrCode.isScanning) {
-        html5QrCode.stop().catch(console.error)
+      if (isScanning.current && html5QrCode.current) {
+        html5QrCode.current
+          .stop()
+          .then(() => {
+            html5QrCode.current?.clear()
+            isScanning.current = false
+          })
+          .catch((err) => {
+            console.warn('カメラの停止に失敗しました:', err)
+          })
       }
     }
-  }, [])
+  }, [onScanSuccess])
 
   return (
-    <div style={{ maxWidth: '600px', margin: '0 auto' }}>
-      <h2>高精度QRリーダー</h2>
-
-      <div
-        id="qr-reader-container"
-        style={{
-          width: '100%',
-          borderRadius: '8px',
-          overflow: 'hidden',
-          backgroundColor: '#000',
-        }}
-      />
-
-      <div
-        style={{
-          marginTop: '20px',
-          padding: '15px',
-          backgroundColor: '#f8f9fa',
-          borderRadius: '6px',
-        }}
-      >
-        <strong>読み取り結果:</strong>
-        <p
-          style={{
-            wordBreak: 'break-all',
-            margin: '10px 0 0',
-            fontFamily: 'monospace',
-          }}
-        >
-          {scannedResult ||
-            'QRコードをカメラにかざしてください（ピントが合うように少し離すと読み取りやすいです）'}
-        </p>
-      </div>
-    </div>
+    <div
+      id={containerId}
+      className="relative w-full max-w-sm mx-auto aspect-video overflow-hidden rounded-md bg-muted border"
+    />
   )
 }

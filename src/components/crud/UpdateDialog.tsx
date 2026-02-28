@@ -1,15 +1,16 @@
 import type { ComponentType } from 'react'
 import { UpdateIconButton } from '@/components/icon-buttons'
 import { BaseDialog } from '@/components/dialog/BaseDialog'
-import type { CrudFormProps } from './crud-form'
+import type { AppEntity } from '@/lib/app-entity'
+import type { CrudFormProps } from '@/lib/use-crud-form'
 
-interface UpdateDialogProps<T> {
+interface UpdateDialogProps<T extends AppEntity> {
   featureName: string
   item: T
   CrudForm: ComponentType<CrudFormProps<T>>
 }
 
-export const UpdateDialog = <T,>({
+export const UpdateDialog = <T extends AppEntity>({
   featureName,
   item,
   CrudForm,

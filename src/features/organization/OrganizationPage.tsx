@@ -21,6 +21,8 @@ const OrganizationPage = () => {
   )
 }
 
-const organizationPageLoader = async () => awaitOrganizationStoreHydration()
+const organizationPageLoader = async () => {
+  await awaitOrganizationStoreHydration()
+}
 
 export { OrganizationPage as Component, organizationPageLoader as loader }

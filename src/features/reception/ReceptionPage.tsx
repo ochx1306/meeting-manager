@@ -1,11 +1,31 @@
-import { QrCodeReader } from './QrCodeReader'
+import { CrudTable } from '@/components/crud/CrudTable'
+import { awaitMeetingStoreHydration } from '../meeting/meeting-store'
+import {
+  useReceptionStore,
+  awaitReceptionStoreHydration,
+} from './reception-store'
+import { receptionColumns } from './reception-columns'
 
 const ReceptionPage = () => {
+  const items = useReceptionStore((state) => state.items)
+
   return (
-    <div>
-      <QrCodeReader />
-    </div>
+    <CrudTable
+      featureName="受付"
+      items={items}
+      columns={receptionColumns}
+      allowCreate={false}
+      allowUpdate={false}
+      allowDelete={false}
+    />
   )
 }
 
-export { ReceptionPage as Component }
+const receptionPageLoader = async () => {
+  await Promise.all([
+    awaitMeetingStoreHydration(),
+    awaitReceptionStoreHydration(),
+  ])
+}
+
+export { ReceptionPage as Component, receptionPageLoader as loader }

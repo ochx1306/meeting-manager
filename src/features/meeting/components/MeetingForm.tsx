@@ -9,6 +9,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Calendar } from '@/components/ui/calendar'
+import { useReceptionStore } from '@/features/reception/reception-store'
 import {
   meetingFormSchema,
   type Meeting,
@@ -22,6 +23,10 @@ export const MeetingForm = ({
   defaultValues,
   onSuccess,
 }: CrudFormProps<Meeting>) => {
+  const initializeReception = useReceptionStore(
+    (state) => state.initializeReception
+  )
+
   const createItem = useMeetingStore((state) => state.createItem)
   const updateItem = useMeetingStore((state) => state.updateItem)
 
@@ -31,18 +36,22 @@ export const MeetingForm = ({
   )
   const sortedMeetingRooms = getSortedMeetingRoomsByCapacity()
 
+  const handleCreateItem = (item: Meeting) => {
+    createItem(item)
+    initializeReception(item)
+  }
+
   const { form, onSubmit } = useCrudForm<MeetingFormValues, Meeting>({
     defaultValues: defaultValues ?? {
       name: '',
       date: new Date(),
       meetingRoomId: meetingRooms[0].id,
       memberIds: [],
-      isReception: false,
     },
     crudMode,
     formSchema: meetingFormSchema,
     entityId: defaultValues?.id,
-    createItem,
+    createItem: handleCreateItem,
     updateItem,
     onSuccess,
   })

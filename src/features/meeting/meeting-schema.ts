@@ -7,7 +7,6 @@ export const meetingSchema = appEntitySchema.extend({
   date: z.date(),
   meetingRoomId: appIdSchema,
   memberIds: z.array(appIdSchema),
-  isReception: z.boolean(),
 })
 export type Meeting = z.infer<typeof meetingSchema>
 
