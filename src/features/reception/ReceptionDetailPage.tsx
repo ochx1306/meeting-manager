@@ -1,27 +1,41 @@
 import { useParams } from 'react-router-dom'
-import { QrScanner } from '@/components/qr/QrScanner'
+import { ReceptionScanner } from '@/components/qr/ReceptionScanner'
 import type { AppId } from '@/lib/app-id'
+import { useMeetingStore } from '../meeting/meeting-store'
 import { useReceptionStore } from './reception-store'
+import { useReception } from './use-reception'
 
 const ReceptionDetailPage = () => {
   const { id } = useParams<{ id: string }>()
   const receptionId = id as AppId
 
   const getItem = useReceptionStore((state) => state.getItem)
+  const updateItem = useReceptionStore((state) => state.updateItem)
+  const getMeeting = useMeetingStore((state) => state.getItem)
+
   const item = receptionId ? getItem(receptionId) : undefined
+
+  const meeting = item ? getMeeting(item.meetingId) : undefined
+
+  const handleSuccess = (id: string) => {
+    const memberId = id as AppId
+    const registeredAt = new Date()
+
+    updateItem({
+      ...item!,
+      records: [...item!.records, { memberId, registeredAt }],
+    })
+  }
+
+  const { handleScan } = useReception({
+    initialAttendedIds: item?.records.map((r) => r.memberId),
+    allowedIds: meeting?.memberIds,
+    onSuccess: handleSuccess,
+  })
+
   if (!item) return null
 
-  const handleScanSuccess = (data: string) => console.log(data)
-
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4">
-      <h1 className="text-xl font-bold mb-4">QRコードをスキャンしてください</h1>
-
-      <div className="w-full max-w-lg aspect-square shadow-lg">
-        <QrScanner onScanSuccess={handleScanSuccess} />
-      </div>
-    </div>
-  )
+  return <ReceptionScanner eventName={item.name} onScan={handleScan} />
 }
 
 //, receptionDetailPageLoader as loader
