@@ -1,5 +1,6 @@
 import { CrudTable } from '@/components/crud/CrudTable'
 import { awaitMeetingStoreHydration } from '../meeting/meeting-store'
+import { OpenReceptionDetailButton } from './components/OpenReceptionDetailButton'
 import {
   useReceptionStore,
   awaitReceptionStoreHydration,
@@ -17,6 +18,7 @@ const ReceptionPage = () => {
       allowCreate={false}
       allowUpdate={false}
       allowDelete={false}
+      PrefixActions={OpenReceptionDetailButton}
     />
   )
 }

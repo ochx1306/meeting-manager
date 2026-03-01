@@ -1,4 +1,4 @@
-import { StrictMode } from 'react'
+// import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './index.css'
@@ -8,10 +8,6 @@ const router = createBrowserRouter([
   {
     path: '/',
     lazy: () => import('@/features/home/HomePage'),
-  },
-  {
-    path: '/university-card',
-    lazy: () => import('@/features/university-card/UniversityCardPage'),
   },
   {
     path: '/organization',
@@ -40,6 +36,10 @@ const router = createBrowserRouter([
   {
     path: '/reception',
     lazy: () => import('@/features/reception/ReceptionPage'),
+  },
+  {
+    path: '/reception/:id',
+    lazy: () => import('@/features/reception/ReceptionDetailPage'),
   },
 ])
 

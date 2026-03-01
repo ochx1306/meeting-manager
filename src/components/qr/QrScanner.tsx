@@ -1,18 +1,24 @@
 import { useEffect, useRef } from 'react'
-import { Html5Qrcode } from 'html5-qrcode'
+import { Html5Qrcode, Html5QrcodeSupportedFormats } from 'html5-qrcode'
 
 interface QrScannerProps {
   onScanSuccess: (decodedText: string) => void
 }
 
-export default function QrScanner({ onScanSuccess }: QrScannerProps) {
+export const QrScanner = ({ onScanSuccess }: QrScannerProps) => {
   const containerId = 'qr-reader-container'
   const isScanning = useRef(false)
   const html5QrCode = useRef<Html5Qrcode | null>(null)
 
   useEffect(() => {
     if (!html5QrCode.current) {
-      html5QrCode.current = new Html5Qrcode(containerId)
+      html5QrCode.current = new Html5Qrcode(containerId, {
+        verbose: false,
+        formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE],
+        experimentalFeatures: {
+          useBarCodeDetectorIfSupported: true,
+        },
+      })
     }
 
     const startScanner = async () => {
@@ -22,7 +28,7 @@ export default function QrScanner({ onScanSuccess }: QrScannerProps) {
         await html5QrCode.current?.start(
           { facingMode: 'user' },
           {
-            fps: 10,
+            fps: 30,
             qrbox: { width: 250, height: 250 },
           },
           (decodedText) => {
@@ -56,7 +62,7 @@ export default function QrScanner({ onScanSuccess }: QrScannerProps) {
   return (
     <div
       id={containerId}
-      className="relative w-full max-w-sm mx-auto aspect-video overflow-hidden rounded-md bg-muted border"
+      className="relative w-full overflow-hidden rounded-md bg-muted border"
     />
   )
 }

@@ -31,8 +31,9 @@ const MemberCardPage = () => {
     let isMounted = true
     const fetchQrCode = async () => {
       try {
-        const shortId = convertToShortAppId(item.id)
-        const url = await generateQrCodeDataUrl(shortId)
+        // const shortId = convertToShortAppId(item.id)
+        // const url = await generateQrCodeDataUrl(shortId)
+        const url = await generateQrCodeDataUrl(item.id)
         if (isMounted) {
           setQrCodeUrl(url)
         }

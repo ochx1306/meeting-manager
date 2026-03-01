@@ -1,3 +1,4 @@
+import { Badge } from '@/components/ui/badge'
 import type { ColumnDef } from '@/components/data-table'
 import { useMeetingStore } from '../meeting/meeting-store'
 import type { Reception } from './reception-schema'
