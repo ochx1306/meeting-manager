@@ -9,6 +9,8 @@ import {
   CopyIcon,
   TrashIcon,
   ForwardIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon,
   type LucideProps,
 } from 'lucide-react'
 
@@ -36,10 +38,20 @@ const OpenDetailIcon: SemanticIcon = forwardRef((props, ref) => (
   <ForwardIcon {...props} ref={ref} />
 ))
 
+const PrevIcon: SemanticIcon = forwardRef((props, ref) => (
+  <ArrowLeftIcon {...props} ref={ref} />
+))
+
+const NextIcon: SemanticIcon = forwardRef((props, ref) => (
+  <ArrowRightIcon {...props} ref={ref} />
+))
+
 export {
   CreateIcon,
   UpdateIcon,
   CopyToClipboardIcon,
   DeleteIcon,
   OpenDetailIcon,
+  PrevIcon,
+  NextIcon,
 }

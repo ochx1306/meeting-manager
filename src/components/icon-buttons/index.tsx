@@ -5,6 +5,8 @@ import {
   CopyToClipboardIcon,
   DeleteIcon,
   OpenDetailIcon,
+  PrevIcon,
+  NextIcon,
 } from '@/components/icons'
 
 type SemanticIconButtonProps = Omit<IconButtonProps, 'icon'>
@@ -29,11 +31,21 @@ const OpenDetailIconButton = (props: SemanticIconButtonProps) => {
   return <IconButton icon={OpenDetailIcon} {...props} />
 }
 
+const PrevIconButton = (props: SemanticIconButtonProps) => {
+  return <IconButton icon={PrevIcon} {...props} />
+}
+
+const NextIconButton = (props: SemanticIconButtonProps) => {
+  return <IconButton icon={NextIcon} {...props} />
+}
+
 export {
   CreateIconButton,
   UpdateIconButton,
   CopyToClipboardIconButton,
   DeleteIconButton,
   OpenDetailIconButton,
+  PrevIconButton,
+  NextIconButton,
   type SemanticIconButtonProps,
 }

@@ -69,7 +69,7 @@ export const menus = [
   },
   {
     id: 9,
-    to: 'settings',
+    to: 'setting',
     title: '設定',
     description: 'アプリの設定',
     icon: <Settings />,

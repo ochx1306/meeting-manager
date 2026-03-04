@@ -41,6 +41,10 @@ const router = createBrowserRouter([
     path: '/reception/:id',
     lazy: () => import('@/features/reception/ReceptionDetailPage'),
   },
+  {
+    path: '/setting',
+    lazy: () => import('@/features/setting/SettingPage'),
+  },
 ])
 
 const rootElement = document.getElementById('root')!

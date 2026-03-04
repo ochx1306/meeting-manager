@@ -25,6 +25,7 @@ export const CreateAllMembersButton = () => {
             fiscalYear,
             roleId: r.id,
             index: 0,
+            downloadCount: 0,
           }
         })
       })

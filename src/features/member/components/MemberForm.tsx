@@ -51,6 +51,7 @@ export const MemberForm = ({
         organizationId: data.organizationId as AppId,
         roleId: data.roleId as AppId,
         index,
+        downloadCount: 0,
       }
     },
     onSuccess,

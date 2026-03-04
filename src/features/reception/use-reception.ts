@@ -23,12 +23,12 @@ export const useReception = ({
       const scannedId = decodedText.trim()
 
       // 1. 重複チェック
-      if (attendedIds.includes(scannedId)) {
-        return {
-          status: 'duplicate',
-          message: '既に受付済みです',
-        }
-      }
+      // if (attendedIds.includes(scannedId)) {
+      //   return {
+      //     status: 'duplicate',
+      //     message: '既に受付済みです',
+      //   }
+      // }
 
       // 2. 許可リストとの照合（制限がある場合のみ）
       if (allowedIds.length > 0 && !allowedIds.includes(scannedId)) {
@@ -49,7 +49,7 @@ export const useReception = ({
         message: '受付を完了しました',
       }
     },
-    [allowedIds, attendedIds, onSuccess]
+    [allowedIds, onSuccess]
   )
 
   const resetAttended = useCallback(() => {

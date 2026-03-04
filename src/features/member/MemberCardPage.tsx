@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { toPng } from 'html-to-image'
 import { convertToShortAppId, type AppId } from '@/lib/app-id'
 import { formatEra } from '@/lib/formatter'
 import { generateQrCodeDataUrl } from '@/lib/qr-code'
+// import { PrevIconButton, NextIconButton } from '@/components/icon-buttons'
 import {
   useOrganizationStore,
   awaitOrganizationStoreHydration,
@@ -20,6 +21,10 @@ const MemberCardPage = () => {
   const [qrCodeUrl, setQrCodeUrl] = useState<string>('')
 
   const getItem = useMemberStore((state) => state.getItem)
+  const getAdjacentMembers = useMemberStore(
+    (state) => state.getAdjacentMemebers
+  )
+  const updateItem = useMemberStore((state) => state.updateItem)
   const getOrganization = useOrganizationStore((state) => state.getItem)
   const getRole = useRoleStore((state) => state.getItem)
 
@@ -65,10 +70,12 @@ const MemberCardPage = () => {
       link.download = `${organizationName}-${formatEra(fiscalYear)}-${roleName}-No.${index + 1}.png`
       link.href = dataUrl
       link.click()
+
+      updateItem({ ...item!, downloadCount: item!.downloadCount + 1 })
     } catch (err) {
       console.error('画像の生成に失敗しました', err)
     }
-  }, [fiscalYear, index, organizationName, roleName])
+  }, [fiscalYear, index, item, organizationName, roleName, updateItem])
 
   if (!item) {
     return (
@@ -78,8 +85,28 @@ const MemberCardPage = () => {
     )
   }
 
+  const [prevItem, _, nextItem] = getAdjacentMembers(item.id)
+
   return (
     <div className="p-8 bg-gray-100 min-h-screen flex flex-col items-center justify-center">
+      <div className="flex w-full justify-between">
+        {prevItem && (
+          <Link
+            to={`/member/${prevItem.id}`}
+            className="flex items-center gap-2"
+          >
+            前のメンバー
+          </Link>
+        )}
+        {nextItem && (
+          <Link
+            to={`/member/${nextItem.id}`}
+            className="flex items-center gap-2"
+          >
+            次のメンバー
+          </Link>
+        )}
+      </div>
       <MemberCard
         organizationName={organizationName}
         fiscalYear={fiscalYear}
@@ -90,7 +117,7 @@ const MemberCardPage = () => {
       />
       <button
         onClick={downloadImage}
-        disabled={!qrCodeUrl}
+        disabled={!qrCodeUrl || item.downloadCount > 0}
         className="mt-8 px-8 py-3 bg-gray-900 text-white font-bold rounded-full hover:bg-black transition-all shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         名刺画像を保存する
