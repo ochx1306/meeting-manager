@@ -12,6 +12,7 @@ export const receptionRecordSchema = z.object({
   memberId: appIdSchema,
   registeredAt: z.date(),
 })
+export type ReceptionRecord = z.infer<typeof receptionRecordSchema>
 
 export const receptionSchema = appEntitySchema.extend({
   meetingId: appIdSchema,

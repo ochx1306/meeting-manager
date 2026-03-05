@@ -11,6 +11,9 @@ const ReceptionDetailPage = () => {
 
   const getItem = useReceptionStore((state) => state.getItem)
   const updateItem = useReceptionStore((state) => state.updateItem)
+  const addReceptionRecord = useReceptionStore(
+    (state) => state.addReceptionRecord
+  )
   const getMeeting = useMeetingStore((state) => state.getItem)
 
   const item = receptionId ? getItem(receptionId) : undefined
@@ -21,10 +24,7 @@ const ReceptionDetailPage = () => {
     const memberId = id as AppId
     const registeredAt = new Date()
 
-    updateItem({
-      ...item!,
-      records: [...item!.records, { memberId, registeredAt }],
-    })
+    addReceptionRecord(receptionId, { memberId, registeredAt })
   }
 
   const { handleScan } = useReception({

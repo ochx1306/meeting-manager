@@ -62,7 +62,7 @@ export const QrScanner = ({ onScanSuccess }: QrScannerProps) => {
   return (
     <div
       id={containerId}
-      className="relative w-full overflow-hidden rounded-md bg-muted border"
+      className="relative w-full overflow-hidden rounded-md bg-muted border -scale-x-100"
     />
   )
 }
